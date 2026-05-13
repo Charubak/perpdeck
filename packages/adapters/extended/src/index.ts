@@ -10,18 +10,15 @@ import {
 } from '@perpdeck/shared';
 import { getPositions as fetchPositions } from './client.js';
 
-// Extended is on Starknet. Starknet addresses are 0x + up to 64 hex chars (felt252).
-// They're 66 chars when zero-padded, but shorter forms are also valid.
-// They don't match the 40-char EVM pattern.
+// Extended is on Starknet, but its positions endpoint is API-key-scoped, not
+// address-scoped. The API key determines which sub-account's positions are returned;
+// the wallet address is only used to decide whether to call this adapter at all.
+// Users typically connect via their EVM wallet (MetaMask), so we accept EVM addresses
+// when EXTENDED_API_KEY is configured. Starknet addresses (>42 chars) also work.
 //
-// EXTENDED_API_KEY env var is required — Extended's positions endpoint is
-// tied to an authenticated sub-account, not derivable from address alone.
-// Without it the adapter reports healthy but returns empty positions.
-const STARKNET_ADDRESS_RE = /^0x[0-9a-fA-F]{1,64}$/;
-
-function isStarknetAddress(address: string): boolean {
-  return STARKNET_ADDRESS_RE.test(address) && address.length > 42;
-}
+// Without EXTENDED_API_KEY the adapter returns empty — there is no public read path.
+const EVM_ADDRESS_RE = /^0x[0-9a-fA-F]{40}$/;
+const STARKNET_ADDRESS_RE = /^0x[0-9a-fA-F]{41,64}$/;
 
 export class ExtendedAdapter implements PortfolioAdapter {
   readonly protocol = Protocol.EXTENDED;
@@ -35,7 +32,9 @@ export class ExtendedAdapter implements PortfolioAdapter {
   }
 
   supports(address: Address): boolean {
-    return isStarknetAddress(address);
+    const key = this.apiKey ?? process.env['EXTENDED_API_KEY'];
+    if (!key) return false; // no key = no data, don't waste a slot in the fan-out
+    return EVM_ADDRESS_RE.test(address) || STARKNET_ADDRESS_RE.test(address);
   }
 
   async getPositions(_address: Address): Promise<Position[]> {
