@@ -10,13 +10,19 @@
     "paths": {
       "@perpdeck/shared": ["../../packages/shared/src/index.ts"],
       "@perpdeck/adapters-base": ["../../packages/adapters/_base/src/index.ts"],
-      "@perpdeck/adapter-hyperliquid": ["../../packages/adapters/hyperliquid/src/index.ts"]
+      "@perpdeck/adapter-hyperliquid": ["../../packages/adapters/hyperliquid/src/index.ts"],
+      "@perpdeck/adapter-lighter": ["../../packages/adapters/lighter/src/index.ts"],
+      "@perpdeck/adapter-extended": ["../../packages/adapters/extended/src/index.ts"],
+      "@perpdeck/adapter-dydx": ["../../packages/adapters/dydx/src/index.ts"]
     }
   },
   "references": [
     { "path": "../../packages/shared" },
     { "path": "../../packages/adapters/_base" },
-    { "path": "../../packages/adapters/hyperliquid" }
+    { "path": "../../packages/adapters/hyperliquid" },
+    { "path": "../../packages/adapters/lighter" },
+    { "path": "../../packages/adapters/extended" },
+    { "path": "../../packages/adapters/dydx" }
   ],
   "include": ["src"]
 }

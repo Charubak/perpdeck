@@ -8,8 +8,14 @@ import { wsRoutes } from './ws/index.js';
 // Register adapters
 import { registerAdapter } from '@perpdeck/adapters-base';
 import { hyperliquidAdapter } from '@perpdeck/adapter-hyperliquid';
+import { lighterAdapter } from '@perpdeck/adapter-lighter';
+import { extendedAdapter } from '@perpdeck/adapter-extended';
+import { dydxAdapter } from '@perpdeck/adapter-dydx';
 
 registerAdapter(hyperliquidAdapter);
+registerAdapter(lighterAdapter);
+registerAdapter(extendedAdapter);
+registerAdapter(dydxAdapter);
 
 const PORT = parseInt(process.env['PORT'] ?? '3001', 10);
 const HOST = process.env['HOST'] ?? '0.0.0.0';

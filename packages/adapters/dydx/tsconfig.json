@@ -1,0 +1,17 @@
+{
+  "extends": "../../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "composite": true,
+    "paths": {
+      "@perpdeck/shared": ["../../shared/src/index.ts"],
+      "@perpdeck/adapters-base": ["../../adapters/_base/src/index.ts"]
+    }
+  },
+  "references": [
+    { "path": "../../shared" },
+    { "path": "../_base" }
+  ],
+  "include": ["src"]
+}
