@@ -28,14 +28,13 @@ export type LighterOrderBookDetails = {
   funding_rate: string;
 };
 
-async function get<T>(path: string, apiKey?: string): Promise<T> {
+async function get<T>(path: string, apiKey?: string): Promise<T | null> {
   const headers: Record<string, string> = { 'Content-Type': 'application/json' };
   if (apiKey) headers['Authorization'] = apiKey;
 
   const res = await fetch(`${BASE_URL}${path}`, { headers });
-  if (!res.ok) {
-    throw new Error(`Lighter API ${res.status}: ${res.statusText}`);
-  }
+  if (res.status === 401 || res.status === 403) return null; // no key or invalid key
+  if (!res.ok) throw new Error(`Lighter API ${res.status}: ${res.statusText}`);
   return res.json() as Promise<T>;
 }
 
@@ -47,7 +46,7 @@ export async function getAccountPositions(
     `/api/v1/accounts/${address.toLowerCase()}/positions`,
     apiKey,
   );
-  return data.positions ?? [];
+  return data?.positions ?? [];
 }
 
 export async function getOrderBookDetails(symbol: string): Promise<LighterOrderBookDetails> {

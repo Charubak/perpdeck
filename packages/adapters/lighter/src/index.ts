@@ -32,7 +32,8 @@ export class LighterAdapter implements PortfolioAdapter {
   }
 
   async getPositions(address: Address): Promise<Position[]> {
-    const raw = await getAccountPositions(address, this.apiKey);
+    const key = this.apiKey ?? process.env['LIGHTER_API_KEY'];
+    const raw = await getAccountPositions(address, key);
     const positions: Position[] = [];
 
     for (const p of raw) {

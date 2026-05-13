@@ -39,9 +39,10 @@ export class ExtendedAdapter implements PortfolioAdapter {
   }
 
   async getPositions(_address: Address): Promise<Position[]> {
-    if (!this.apiKey) return [];
+    const apiKey = this.apiKey ?? process.env['EXTENDED_API_KEY'];
+    if (!apiKey) return [];
 
-    const raw = await fetchPositions(this.apiKey);
+    const raw = await fetchPositions(apiKey);
     const positions: Position[] = [];
 
     for (const p of raw) {

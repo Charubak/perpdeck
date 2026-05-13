@@ -1,3 +1,6 @@
+// env MUST be the first import — loads .env.local before any adapter reads process.env
+import './env.js';
+
 import Fastify from 'fastify';
 import cors from '@fastify/cors';
 import rateLimit from '@fastify/rate-limit';
