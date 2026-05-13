@@ -1,0 +1,22 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "composite": true,
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "lib": ["ES2022"],
+    "paths": {
+      "@perpdeck/shared": ["../../packages/shared/src/index.ts"],
+      "@perpdeck/adapters-base": ["../../packages/adapters/_base/src/index.ts"],
+      "@perpdeck/adapter-hyperliquid": ["../../packages/adapters/hyperliquid/src/index.ts"]
+    }
+  },
+  "references": [
+    { "path": "../../packages/shared" },
+    { "path": "../../packages/adapters/_base" },
+    { "path": "../../packages/adapters/hyperliquid" }
+  ],
+  "include": ["src"]
+}
